@@ -11,7 +11,7 @@ do
 			#Time=$(./streamcompaction 0 $i 8000000 | grep Throughput | awk '{print $4}')
 			Throughput=$(./streamcompaction 0 $i 2048000000 | grep Throughput | awk '{print $8}')
    			echo "$th, $co, $i, $Throughput"
-			echo "$th, $co, $i, $Throughput" >> log1.csv
+			echo "$th, $co, $i, $Throughput" >> streamcompactionlog.csv
 		done
 		echo " " >> log1.csv
 	done
