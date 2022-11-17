@@ -85,7 +85,7 @@ int main(int argc, char **argv){
   cudaMalloc((void **)&d_A, size);
 
 #define WARMUP 1
-#define REP 4
+#define REP 2
   for(int iteration = 0; iteration < REP+WARMUP; iteration++){
     // Initialize the host input vector
     srand(2014);
