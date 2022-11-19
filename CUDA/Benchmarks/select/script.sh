@@ -9,7 +9,7 @@ do
 			nvcc -O3 -arch=sm_52 select.cu -I/usr/local/cuda/include -lm -o select -D COARSENING=$co -D THREADS=$th -D INT  	
 
 			#Time=$(./streamcompaction 0 $i 8000000 | grep Throughput | awk '{print $4}')
-			Throughput=$(./select 0 $i 8000000 | grep Copy_if | awk '{print $10}')
+			Throughput=$(./select 0 $i 512000000 | grep Copy_if | awk '{print $10}')
    			echo "$th, $co, $i, $Throughput"
 			echo "$th, $co, $i, $Throughput" >> selectlog.csv
 		done
