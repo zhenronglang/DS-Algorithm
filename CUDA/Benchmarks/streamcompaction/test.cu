@@ -14,9 +14,9 @@
 #define REP 10
 
 int main(){
-  for (int i = 0; i < 100; i +=10){
+  for (float i = 0.0; i <1.05; i += 0.1){
     int input = i;
-    int numElements = 8000000;
+    int numElements = 512000000;
     size_t size = numElements * sizeof(T);
     
     int value = 0;
@@ -30,7 +30,7 @@ int main(){
 
 
 
-    for(int iteration = 0; iteration < REP+WARMUP; iteration++){
+    for (int iteration = 0; iteration < REP+WARMUP; iteration++){
 
             
       // Initialize the host input vectors
@@ -58,7 +58,7 @@ int main(){
         
       cudaEventRecord( start, 0 );
 
-      thrust::partition(d_vec.begin(), d_vec.end(), s_vec.begin(), value);
+      thrust::remove(d_vec.begin(), d_vec.end(), s_vec.begin(), value);
 
       cudaDeviceSynchronize();
       cudaEventRecord(stop, 0);
@@ -71,7 +71,7 @@ int main(){
           double bw = (double)((2 * numElements) * sizeof(T)) / (double)(timer * 1000000.0);
           // FILE *fpt;
           // fpt = fopen("hype.csv", "a");
-          fprintf(fpt, "%d, %f, %f\n", input, timer, bw);
+          fprintf("%d, %f, %f\n", input, timer, bw);
           //fclose(fpt);
           }
         }
