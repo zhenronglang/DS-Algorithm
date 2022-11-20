@@ -7,6 +7,13 @@
 
 int main() {
   // Generate 32M random numbers serially.
+
+  
+  cudaEvent_t start, stop;
+  // Allocate the host input vector A
+  int *h_A = (int*)malloc(512000000 * sizeof(int));
+
+
   int value = 0;
   int numElements = 8000000;
   float input = 0.1;
@@ -22,14 +29,16 @@ int main() {
             m--;
         }
     }
-   
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+
 
 
 
 
 
   // thrust::uniform_int_distribution<int> dist;
-  //thrust::host_vector<int> h_vec(32 << 20);
+  // thrust::host_vector<int> h_vec(32 << 20);
   // thrust::generate(h_vec.begin(), h_vec.end(), [&] { return dist(rng); });
   // Transfer data to the device.
   thrust::device_vector<int> d_vec = h_vec;
