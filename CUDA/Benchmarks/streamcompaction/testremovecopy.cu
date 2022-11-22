@@ -58,8 +58,7 @@ int main(){
         
       cudaEventRecord( start, 0 );
 
-      auto new_end = thrust::remove(d_vec.begin(), d_vec.end(), value);
-
+      thrust::remove_copy(d_vec.begin(), d_vec.end(), s_vec.begin(),value);
       cudaDeviceSynchronize();
       cudaEventRecord(stop, 0);
       cudaEventSynchronize(stop);

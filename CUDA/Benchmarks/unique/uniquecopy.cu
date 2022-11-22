@@ -8,14 +8,25 @@
 #include <time.h>
 #include <stdio.h>
 #include <vector>
+#include <thrust/copy.h>
+#include <thrust/execution_policy.h>
+#include <thrust/unique.h>
 
 #define T int
 #define WARMUP 2
 #define REP 10
 
+struct is_even{
+  __host__ __device__
+  bool operator()(const T &x){
+    return (x % 2) == 0;
+  }
+};
+
+
 int main(){
   for (float i = 0.0; i <1.05; i += 0.1){
-    int input = i;
+    float input = i;
     int numElements = 16000000;
     size_t size = numElements * sizeof(T);
     
@@ -39,15 +50,15 @@ int main(){
 
       srand(2014);
       for(int i = 0; i < numElements; i++)
-    	  h_A[i] = value;
+        h_A[i] = i % 2 != 0 ? i:i+1;
       int M = (numElements * input)/100;
       int m = M;
       while(m>0){
         int x = (int)(numElements*(((float)rand()/(float)RAND_MAX)));
-        if(h_A[x]==value){
-    	    h_A[x] = x+2;
-          m--;
-          }
+        if(h_A[x] % 2 != 0){
+            h_A[x] = x * 2;
+            m--;
+        }
       }
 
   
@@ -58,8 +69,9 @@ int main(){
         
       cudaEventRecord( start, 0 );
 
-      auto new_end = thrust::remove(d_vec.begin(), d_vec.end(), value);
+      auto new_end = thrust::unique_copy(d_vec.begin(), d_vec.end(), s_vec.begin());
 
+ 
       cudaDeviceSynchronize();
       cudaEventRecord(stop, 0);
       cudaEventSynchronize(stop);
@@ -69,7 +81,7 @@ int main(){
         if(iteration == REP+WARMUP-1){
           float timer = time2 / REP;
           double bw = (double)((2 * numElements) * sizeof(T)) / (double)(timer * 1000000.0);
-          printf("%d, %f, %f\n", input, timer, bw);
+          printf("%f, %f, %f\n", input, timer, bw);
 	}   
        }
     }
