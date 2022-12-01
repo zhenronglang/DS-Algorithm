@@ -9,6 +9,14 @@
 #define WARMUP 2
 #define REP 10
 
+struct is_even
+{
+	__host__ __device__ bool operator()(const T &x)
+	{
+		return (x % 2) == 0;
+	}
+};
+
 int main()
 {
 	for (float i = 0.0; i < 1.05; i += 0.1)
@@ -17,7 +25,6 @@ int main()
 		int numElements = 16000000;
 		size_t size = numElements * sizeof(T);
 
-		int value = 0;
 		cudaSetDevice(0);
 
 		cudaEvent_t start, stop;
