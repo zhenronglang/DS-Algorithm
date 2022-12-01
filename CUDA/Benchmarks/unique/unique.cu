@@ -16,6 +16,19 @@
 #define WARMUP 2
 #define REP 10
 
+
+
+#include <thrust/host_vector.h>
+#include <thrust/device_vector.h>
+#include <thrust/generate.h>
+#include <thrust/sort.h>
+#include <thrust/copy.h>
+#include <thrust/random.h>
+#include <thrust/unique.h>
+#include <time.h>
+#include <stdio.h>
+#include <vector>
+
 struct is_even{
   __host__ __device__
   bool operator()(const T &x){

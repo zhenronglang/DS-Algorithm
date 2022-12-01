@@ -6,13 +6,12 @@ do
 		for i in $(seq 0 0.1 1) 
 		do
 			make clean
-			nvcc -arch=sm_52 streamcompaction.cu -I/usr/local/cuda/include -lm -o streamcompaction -D atom -D INT -D COARSENING=$co -D THREADS=$th
+			nvcc -arch=sm_52 streamcompaction.cu -I/usr/local/cuda/include -lm -o streamcompaction -D INT -D COARSENING=$co -D THREADS=$th
 	
-			#Time=$(./streamcompaction 0 $i 8000000 | grep Throughput | awk '{print $4}')
 			Throughput=$(./streamcompaction 0 $i 512000000 | grep Throughput | awk '{print $8}')
    			echo "$th, $co, $i, $Throughput"
-			echo "$th, $co, $i, $Throughput" >> streamlogatomic.csv
+			echo "$th, $co, $i, $Throughput" >> streamnonatomic.csv
 		done
-		echo " " >> log1.csv
+		echo " " >> streamnonatomic.csv
 	done
 done
