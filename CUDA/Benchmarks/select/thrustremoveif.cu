@@ -41,15 +41,15 @@ int main()
 
 			srand(2014);
 			for (int i = 0; i < numElements; i++)
-				h_A[i] = value;
+				h_A[i] = i % 2 != 0 ? i : i + 1;
 			int M = (numElements * input) / 100;
 			int m = M;
 			while (m > 0)
 			{
 				int x = (int)(numElements * (((float)rand() / (float)RAND_MAX)));
-				if (h_A[x] == value)
+				if (h_A[x] % 2 != 0)
 				{
-					h_A[x] = x + 2;
+					h_A[x] = x * 2;
 					m--;
 				}
 			}
